@@ -2,64 +2,68 @@
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
-    <title>Jazz Guitar Lesson Times</title>
+    <title>Practice Times</title>
   </head>
   <body>
-    <div>
-      <span>Warm Up</span>
-      <input id="warm-up-input" type="number" name="" value="0">
-      <span>%</span>
-    </div>
-    <div>
-      <span>Repertoire</span>
-      <input id="repertoire-input" type="number" name="" value="0">
-      <span>%</span>
-    </div>
-    <div>
-      <span>Scales/Arpeggios</span>
-      <input id="scales-arpeggios-input" type="number" name="" value="0">
-      <span>%</span>
-    </div>
-    <div>
-      <span>Chords/Comping</span>
-      <input id="chords-comping-input" type="number" name="" value="0">
-      <span>%</span>
-    </div>
-    <div>
-      <span>How much time do you want to practice today?</span>
-      <input id="how-much-time-input" type="number" name="" value="">
-      <span>minutes</span>
-    </div>
-    <button id="calculate-button" type="button" name="button">Calculate</button>
-    <div>
-      <p>Warm Up: <span id="warm-up-output">0</span> minutes</p>
-      <p>Repertoire: <span id="repertoire-output">0</span> minutes</p>
-      <p>Scales/Arpeggios: <span id="scales-arpeggios-output">0</span> minutes</p>
-      <p>Chords/Comping: <span id="chords-comping-output">0</span> minutes</p>
-    </div>
+    <main id="app">
+      <div>
+        <span>How much time do you want to practice today?</span>
+        <input v-model="howMuchTimeInput" v-on:input="calculate">
+        <span>minutes</span>
+      </div>
+      <div>
+        <span>Warm Up</span>
+        <input v-model="warmUpInput" v-on:input="calculate">
+        <span>%</span>
+      </div>
+      <div>
+        <span>Repertoire</span>
+        <input v-model="repertoireInput" v-on:input="calculate">
+        <span>%</span>
+      </div>
+      <div>
+        <span>Scales/Arpeggios</span>
+        <input v-model="scalesArpeggiosInput" v-on:input="calculate">
+        <span>%</span>
+      </div>
+      <div>
+        <span>Chords/Comping</span>
+        <input v-model="chordsCompingInput" v-on:input="calculate">
+        <span>%</span>
+      </div>
+      <div>
+        <p>Warm Up: {{ warmUpOutput }} minutes</p>
+        <p>Repertoire: {{ repertoireOutput }} minutes</p>
+        <p>Scales/Arpeggios: {{ scalesArpeggiosOutput }} minutes</p>
+        <p>Chords/Comping: {{ chordsCompingOutput }} minutes</p>
+      </div>
+    </main>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
     <script>
-      var warmUpInput = document.getElementById('warm-up-input');
-      var repertoireInput = document.getElementById('repertoire-input');
-      var scalesArpeggiosInput = document.getElementById('scales-arpeggios-input');
-      var chordsCompingInput = document.getElementById('chords-comping-input');
-
-      var howMuchTimeInput = document.getElementById('how-much-time-input');
-      var calculateButton = document.getElementById('calculate-button');
-
-      var warmUpOutput = document.getElementById('warm-up-output');
-      var repertoireOutput = document.getElementById('repertoire-output');
-      var scalesArpeggiosOutput = document.getElementById('scales-arpeggios-output');
-      var chordsCompingOutput = document.getElementById('chords-comping-output');
-
-      function percentageToMinutes(total, percentage) {
-        return total / (100 / percentage);
-      }
-
-      calculateButton.addEventListener('click', function(e) {
-        warmUpOutput.innerHTML = percentageToMinutes(howMuchTimeInput.value, warmUpInput.value);
-        repertoireOutput.innerHTML = percentageToMinutes(howMuchTimeInput.value, repertoireInput.value);
-        scalesArpeggiosOutput.innerHTML = percentageToMinutes(howMuchTimeInput.value, scalesArpeggiosInput.value);
-        chordsCompingOutput.innerHTML = percentageToMinutes(howMuchTimeInput.value, chordsCompingInput.value);
+      var app = new Vue({
+        el: '#app',
+        data: {
+          warmUpInput: 0,
+          repertoireInput: 0,
+          scalesArpeggiosInput: 0,
+          chordsCompingInput: 0,
+          howMuchTimeInput: 0,
+          warmUpOutput: 0,
+          repertoireOutput: 0,
+          scalesArpeggiosOutput: 0,
+          chordsCompingOutput: 0,
+        },
+        methods: {
+          calculate: function() {
+            this.warmUpOutput = this.percentageToMinutes(this.howMuchTimeInput, this.warmUpInput);
+            this.repertoireOutput = this.percentageToMinutes(this.howMuchTimeInput, this.repertoireInput);
+            this.scalesArpeggiosOutput = this.percentageToMinutes(this.howMuchTimeInput, this.scalesArpeggiosInput);
+            this.chordsCompingOutput = this.percentageToMinutes(this.howMuchTimeInput, this.chordsCompingInput);
+          },
+          percentageToMinutes: function(total, percentage) {
+            return total / (100 / percentage);
+          }
+        }
       });
     </script>
   </body>

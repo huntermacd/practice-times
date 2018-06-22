@@ -2,41 +2,56 @@
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <title>Practice Times</title>
+    <style>
+      body {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        margin: 0;
+        font-family: sans-serif;
+        font-size: 18px;
+      }
+
+      .red {
+        color: red;
+      }
+
+      .green {
+        color: limegreen;
+      }
+
+      input[type=range] {
+        width: 100%;
+      }
+    </style>
   </head>
   <body>
     <main id="app">
-      <div>
-        <span>How much time do you want to practice today?</span>
-        <input v-model="howMuchTimeInput" v-on:input="calculate">
-        <span>minutes</span>
-      </div>
-      <div>
-        <span>Warm Up</span>
-        <input v-model="warmUpInput" v-on:input="calculate">
-        <span>%</span>
-      </div>
-      <div>
-        <span>Repertoire</span>
-        <input v-model="repertoireInput" v-on:input="calculate">
-        <span>%</span>
-      </div>
-      <div>
-        <span>Scales/Arpeggios</span>
-        <input v-model="scalesArpeggiosInput" v-on:input="calculate">
-        <span>%</span>
-      </div>
-      <div>
-        <span>Chords/Comping</span>
-        <input v-model="chordsCompingInput" v-on:input="calculate">
-        <span>%</span>
-      </div>
-      <div>
-        <p>Warm Up: {{ warmUpOutput }} minutes</p>
-        <p>Repertoire: {{ repertoireOutput }} minutes</p>
-        <p>Scales/Arpeggios: {{ scalesArpeggiosOutput }} minutes</p>
-        <p>Chords/Comping: {{ chordsCompingOutput }} minutes</p>
-      </div>
+      <fieldset>
+        <legend>Total: <span v-bind:class="totalColorClass">{{ totalPercentage }}%</span></legend>
+        <label for="how-much-time-input">Available Practice Time: {{ howMuchTimeInput }} min</label>
+        <br>
+        <input id="how-much-time-input" type="range" min="0" max="180" step="5" v-model="howMuchTimeInput" v-on:input="calculate">
+        <hr>
+        <label for="warm-up-input">Warm Up: {{ warmUpInput }}% ({{ warmUpOutput }} min)</label>
+        <br>
+        <input id="warm-up-input" type="range" min="0" max="100" step="5" v-model="warmUpInput" v-on:input="calculate">
+        <hr>
+        <label for="repertoire-input">Repertoire: {{ repertoireInput }}% ({{ repertoireOutput }} min)</label>
+        <br>
+        <input id="repertoire-input" type="range" min="0" max="100" step="5" v-model="repertoireInput" v-on:input="calculate">
+        <hr>
+        <label for="scales-arpeggios-input">Scales/Arpeggios: {{ scalesArpeggiosInput }}% ({{ scalesArpeggiosOutput }} min)</label>
+        <br>
+        <input id="scales-arpeggios-input" type="range" min="0" max="100" step="5" v-model="scalesArpeggiosInput" v-on:input="calculate">
+        <hr>
+        <label for="chords-comping-input">Chords/Comping: {{ chordsCompingInput }}% ({{ chordsCompingOutput }} min)</label>
+        <br>
+        <input id="chords-comping-input" type="range" min="0" max="100" step="5" v-model="chordsCompingInput" v-on:input="calculate">
+      </fieldset>
     </main>
     <script src="https://cdn.jsdelivr.net/npm/vue"></script>
     <script>
@@ -52,6 +67,8 @@
           repertoireOutput: 0,
           scalesArpeggiosOutput: 0,
           chordsCompingOutput: 0,
+          totalPercentage: 0,
+          totalColorClass: ''
         },
         methods: {
           calculate: function() {
@@ -59,9 +76,23 @@
             this.repertoireOutput = this.percentageToMinutes(this.howMuchTimeInput, this.repertoireInput);
             this.scalesArpeggiosOutput = this.percentageToMinutes(this.howMuchTimeInput, this.scalesArpeggiosInput);
             this.chordsCompingOutput = this.percentageToMinutes(this.howMuchTimeInput, this.chordsCompingInput);
+            this.total();
           },
           percentageToMinutes: function(total, percentage) {
             return total / (100 / percentage);
+          },
+          total: function() {
+            var total = +this.warmUpInput + +this.repertoireInput + +this.scalesArpeggiosInput + +this.chordsCompingInput;
+
+            if (total > 100) {
+              this.totalColorClass = 'red';
+            } else if (total == 100) {
+              this.totalColorClass = 'green';
+            } else {
+              this.totalColorClass = '';
+            }
+
+            this.totalPercentage = total;
           }
         }
       });

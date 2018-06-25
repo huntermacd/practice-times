@@ -2,31 +2,9 @@
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"/>
     <title>Practice Times</title>
-    <style>
-      body {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        height: 100vh;
-        margin: 0;
-        font-family: sans-serif;
-        font-size: 18px;
-      }
-
-      .red {
-        color: red;
-      }
-
-      .green {
-        color: limegreen;
-      }
-
-      input[type=range] {
-        width: 100%;
-      }
-    </style>
+    <link rel="stylesheet" href="style.css">
   </head>
   <body>
     <main id="app">
@@ -54,48 +32,6 @@
       </fieldset>
     </main>
     <script src="https://cdn.jsdelivr.net/npm/vue"></script>
-    <script>
-      var app = new Vue({
-        el: '#app',
-        data: {
-          warmUpInput: 0,
-          repertoireInput: 0,
-          scalesArpeggiosInput: 0,
-          chordsCompingInput: 0,
-          howMuchTimeInput: 0,
-          warmUpOutput: 0,
-          repertoireOutput: 0,
-          scalesArpeggiosOutput: 0,
-          chordsCompingOutput: 0,
-          totalPercentage: 0,
-          totalColorClass: ''
-        },
-        methods: {
-          calculate: function() {
-            this.warmUpOutput = this.percentageToMinutes(this.howMuchTimeInput, this.warmUpInput);
-            this.repertoireOutput = this.percentageToMinutes(this.howMuchTimeInput, this.repertoireInput);
-            this.scalesArpeggiosOutput = this.percentageToMinutes(this.howMuchTimeInput, this.scalesArpeggiosInput);
-            this.chordsCompingOutput = this.percentageToMinutes(this.howMuchTimeInput, this.chordsCompingInput);
-            this.total();
-          },
-          percentageToMinutes: function(total, percentage) {
-            return total / (100 / percentage);
-          },
-          total: function() {
-            var total = +this.warmUpInput + +this.repertoireInput + +this.scalesArpeggiosInput + +this.chordsCompingInput;
-
-            if (total > 100) {
-              this.totalColorClass = 'red';
-            } else if (total == 100) {
-              this.totalColorClass = 'green';
-            } else {
-              this.totalColorClass = '';
-            }
-
-            this.totalPercentage = total;
-          }
-        }
-      });
-    </script>
+    <script src="script.js"></script>
   </body>
 </html>
